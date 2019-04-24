@@ -16,7 +16,6 @@ from libdw import pyrebase
 from kivy.garden.matplotlib.backend_kivyagg import FigureCanvas
 url="https://dw4c3-f19ad.firebaseio.com/"
 apikey="AIzaSyBNDJ2C8IvzTNJCJ0XUNbDFuyeIkqnz3gk"
-
 config = {
     "apiKey": apikey,
     "databaseURL": url,
