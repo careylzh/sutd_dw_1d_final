@@ -10,3 +10,5 @@ Python Kivy UI Wireframing: S. Chua </br>
 Python Kivy UI Design: S. Chua, Ng. Z.H, Carey Lai </br> 
 Hardware(eletromagnetic lock interface with Arduino and RPi): Zeng. Z.M, Xie. P.N </br> 
 Building into Android app: Carey Lai
+
+For anyone interested, you can launch this prototype on your phone via Kivy Launcher by placing these files in the same folder. The images of the various food items are not uploaded for copyright reasons. 
