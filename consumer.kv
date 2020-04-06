@@ -1,0 +1,949 @@
+WindowManager: 
+#Defines the screens that are handled by the screen manager
+    LoginPage:
+    SignUpPage:
+    MainMenu:
+    chickenRiceScreen:
+    HealthSoupScreen:
+    CartPage:
+
+<MyWidget@Widget>: 
+#Custom widget for displaying a straight line on the screen
+    size_hint_y: None
+    size_hint_x: 0.2
+    height: 2.5
+    canvas:
+        Color:
+            rgba: 0, 0, 0, 0.30
+        Rectangle:
+            pos: self.pos
+            size: self.width, 2
+
+<MyLabelStalls@Label>:
+    color: 0, 0, 0, 0.7
+    background_color: 0, 0, 0, 0
+    size_hint_x: 0.1
+    halign:'left'
+    valign:'center'
+    text_size: self.size
+
+<MyButtonStalls@Button>:
+    color: 0, 0, 0, 1
+    background_color: 0, 0, 0, 0
+    size_hint_y: None
+    size_hint_x:0.85
+    height: 300
+    halign:'left'
+    valign:'center'
+    text_size: self.size
+
+<PopupPage>:
+    container: container
+    cols: 1
+
+    GridLayout:
+        cols: 1
+        canvas.before:
+            Color:
+                rgba: 1, 1, 1, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        ScrollView:
+            size_hint: (1, .9)
+            bar_width: 10
+            bar_color: 0, 0, 0, 0.5
+            bar_inactive_color: 0, 0, 0, 0
+            effect_cls: "ScrollEffect"
+            scroll_type: ['bars']
+
+            StackLayout:
+                id: container
+                size_hint_y: None
+
+<LoginPage>
+    name: 'login_page'
+
+    FloatLayout:
+
+        canvas.before:
+            Color:
+                rgba: 40/255, 146/255, 69/255, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        Label:
+            text: 'ORDERNOW'
+            font_name: 'Roboto-Bold'
+            pos_hint: {'center_x': 0.5, 'y': 0.28}
+            font_size: 72
+            color: 1, 1, 1, 0.8
+
+        Label:
+            text: 'Grab Your Food Later'
+            pos_hint: {'center_x': 0.5, 'y': 0.2}
+            font_size: 36
+            color: 1, 1, 1, 0.8
+
+        Label:
+            id: invalid_account
+            text: ''
+            pos_hint: {'center_x': 0.5, 'y': -0.18}
+            font_size: 18
+            color: 1, 0, 0, 0.8
+
+        GridLayout:
+            pos_hint: {'center_y': 0.5, 'center_x': 0.5}
+            size_hint: 0.8, 0.3
+            cols: 1
+            spacing: 0, 5
+
+            TextInput:
+                id: username
+                text: 'Username'
+                multiline: False
+                size_hint_y: 0.1
+                background_color: 0, 0, 0, 0
+                text_color: (1, 1, 1, 0.5)
+                canvas.before:
+                    Color:
+                        rgba: self.text_color
+                    Line:
+                        width: 1
+                        rectangle: self.x, self.y, self.width, self.height
+                on_focus:
+                    root.clear_text_once_username()
+
+            TextInput:
+                id: passw
+                text: 'Password'
+                password: False
+                multiline: False
+                size_hint_y: 0.1
+                background_color: 0, 0, 0, 0
+                text_color: (1, 1, 1, 0.5)
+                canvas.before:
+                    Color:
+                        rgba: self.text_color
+                    Line:
+                        width: 1
+                        rectangle: self.x, self.y, self.width, self.height
+                on_focus:
+                    root.clear_text_once_passw()
+
+            Button:
+                text: 'Sign In'
+                size_hint: 1, 0.1
+                background_color: 0.3, 0.3, 0.3, 0.45
+                on_release:
+                    root.verify_credentials()
+                    root.manager.transition.direction = "left"
+
+            Button:
+                source: 'Buttons.png'
+                text: 'New User'
+                size_hint: 1, 0.1
+                background_color: 0.3, 0.3, 0.3, 0.45
+                on_release:
+                    app.root.current = "sign_up"
+                    root.manager.transition.direction = "left"
+
+<SignUpPage>
+    name: 'sign_up'
+
+    FloatLayout:
+        canvas.before:
+            Color:
+                rgba: 40/255, 146/255, 69/255, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        Label:
+            id: account_created
+            text: ''
+            color: 1, 1, 1, 1
+            pos_hint: {'center_y': 0.75, 'center_x ': 0.5}
+
+        GridLayout:
+            pos_hint: {'center_y': 0.5, 'center_x': 0.5}
+            size_hint: 0.8, 0.4
+            cols: 1
+            spacing: 0, 5
+
+            TextInput:
+                id: new_username
+                multiline: False
+                text: 'Username'
+                size_hint_y: 0.1
+                background_color: 0, 0, 0, 0
+                text_color: (1, 1, 1, 0.5)
+                canvas.before:
+                    Color:
+                        rgba: self.text_color
+                    Line:
+                        width: 1
+                        rectangle: self.x, self.y, self.width, self.height
+                on_focus: 
+                #clears the current text and highlights the widget when the user clicks it
+                    root.clear_text_once_username()
+
+            TextInput:
+                id: new_password
+                multiline: False
+                text: 'Password'
+                password: False
+                size_hint_y: 0.1
+                background_color: 0, 0, 0, 0
+                text_color: (1, 1, 1, 0.5)
+                canvas.before:
+                    Color:
+                        rgba: self.text_color
+                    Line:
+                        width: 1
+                        rectangle: self.x, self.y, self.width, self.height
+                on_focus: 
+                #clears the current text and highlights the widget when the user clicks it
+                    root.clear_text_once_passw()
+
+            TextInput:
+                id: retype_password
+                multiline: False
+                text: 'Re-type Password'
+                password: False
+                size_hint_y: 0.1
+                background_color: 0, 0, 0, 0
+                text_color: (1, 1, 1, 0.5)
+                canvas.before:
+                    Color:
+                        rgba: self.text_color
+                    Line:
+                        width: 1
+                        rectangle: self.x, self.y, self.width, self.height
+                on_focus: 
+                #clears the current text and highlights the widget when the user clicks it
+                    root.clear_text_once_rtpassw()
+
+            Button:
+                text: 'Submit'
+                size_hint: 1, 0.1
+                background_color: 0.3, 0.3, 0.3, 0.35
+                on_release:
+                    root.create_account()
+
+            Button:
+                text: 'Back'
+                size_hint: 1, 0.1
+                background_color: 0.3, 0.3, 0.3, 0.35
+                on_release:
+                    app.root.current = "login_page"
+                    root.manager.transition.direction = "right"
+
+<MainMenu>
+    name: 'main_menu'
+
+    GridLayout:
+        rows: 2
+
+        GridLayout:
+            cols: 3
+            size_hint_y: 0.08
+            canvas.before:
+                Color:
+                    rgba: 40/255, 146/255, 69/255, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+
+            Button:
+                id: orders
+                text: 'Orders'
+                background_color: 0.3, 0.3, 0.3, 0.7
+                size_hint_x: 0.2
+                on_release:
+                    root.show_popup()
+                    root.manager.transition.direction = "right"
+
+            Label:
+                text: '   Stalls'
+                halign:'center'
+                valign:'center'
+                text_size: self.size
+                size_hint_x: 0.6
+
+            Button:
+                id: 'cart'
+                text: 'Cart'
+                background_color: 0.3, 0.3, 0.3, 0.7
+                size_hint_x: 0.2
+                on_release:
+                    app.root.current =  'cart_page'
+                    root.manager.transition.direction = "left"
+
+        GridLayout:
+            cols: 2
+            size_hint_y: 0.92
+            spacing: 0, 5
+            canvas.before:
+                Color:
+                    rgba: 1, 1, 1, 1
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+
+            Widget:
+                size_hint_y: None
+                size_hint_x: 0.2
+                height: 2.5
+                canvas:
+                    Color:
+                        rgba: 0, 0, 0, 0
+                    Rectangle:
+                        pos: self.pos
+                        size: self.width, 2
+
+            Widget:
+                size_hint_y: None
+                size_hint_x: 0.2
+                height: 2.5
+                canvas:
+                    Color:
+                        rgba: 0, 0, 0, 0
+                    Rectangle:
+                        pos: self.pos
+                        size: self.width, 2
+
+            Button:
+                id: 'chickenrice'
+                text: '  Chicken Rice'
+                halign: 'left'
+                valign: 'center'
+                text_size: self.size
+                color: 0, 0, 0, 1
+                background_color: 0, 0, 0, 0
+                size_hint_x: 0.8
+                on_release:
+                    root.switch_cr()
+                    root.manager.transition.direction = "left"
+
+            Label:
+                text: ''
+                size_hint_x: 0.2
+                Image:
+                    source: 'roastedChickenRice.jpg'
+                    pos: self.parent.pos
+                    size: self.parent.size
+
+            MyWidget:
+            MyWidget:
+
+            Button:
+                text: '  Health Soup'
+                halign: 'left'
+                valign: 'center'
+                text_size: self.size
+                color: 0, 0, 0, 1
+                background_color: 0, 0, 0, 0
+                size_hint_x: 0.8
+                on_release:
+                    root.switch_hs()
+                    root.manager.transition.direction = "left"
+
+            Label:
+                text: ''
+                size_hint_x: 0.2
+                Image:
+                    source: 'healthsoup.jpg'
+                    pos: self.parent.pos
+                    size: self.parent.size
+
+            MyWidget:
+            MyWidget:
+
+            Button:
+                text: '  Western Food'
+                halign: 'left'
+                valign: 'center'
+                text_size: self.size
+                color: 0, 0, 0, 1
+                background_color: 0, 0, 0, 0
+                size_hint_x: 0.8
+
+            Label:
+                text: ''
+                size_hint_x: 0.2
+                Image:
+                    source: 'westernfood.jpg'
+                    pos: self.parent.pos
+                    size: self.parent.size
+
+            MyWidget:
+            MyWidget:
+
+            Button:
+                text: '  Economical Rice'
+                halign: 'left'
+                valign: 'center'
+                text_size: self.size
+                color: 0, 0, 0, 1
+                background_color: 0, 0, 0, 0
+                size_hint_x: 0.8
+
+            Label:
+                text: ''
+                size_hint_x: 0.2
+                Image:
+                    source: 'roastedChickenRice.jpg'
+                    pos: self.parent.pos
+                    size: self.parent.size
+
+            MyWidget:
+            MyWidget:
+
+
+            Button:
+                text: '  Malay Food'
+                halign: 'left'
+                valign: 'center'
+                text_size: self.size
+                color: 0, 0, 0, 1
+                background_color: 0, 0, 0, 0
+                size_hint_x: 0.8
+
+            Label:
+                text: ''
+                size_hint_x: 0.2
+                Image:
+                    source: 'malayfood.jpg'
+                    pos: self.parent.pos
+                    size: self.parent.size
+
+            MyWidget:
+            MyWidget:
+
+            Button:
+                text: '  Japanese and Korean'
+                halign: 'left'
+                valign: 'center'
+                text_size: self.size
+                color: 0, 0, 0, 1
+                background_color: 0, 0, 0, 0
+                size_hint_x: 0.8
+
+            Label:
+                text: ''
+                size_hint_x: 0.2
+                Image:
+                    source: 'japanesefood.jpg'
+                    pos: self.parent.pos
+                    size: self.parent.size
+
+            MyWidget:
+            MyWidget:
+
+<chickenRiceScreen>
+    name: 'chicken_rice'
+
+    GridLayout:
+        rows: 2
+
+        GridLayout:
+            cols: 3
+            size_hint_y: 0.08
+            canvas.before:
+                Color:
+                    rgba: 40/255, 146/255, 69/255, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+
+            Button:
+                text: 'Back'
+                background_color: 0.3, 0.3, 0.3, 0.7
+                size_hint_x: 0.2
+                on_release:
+                    app.root.current =  'main_menu'
+                    root.manager.transition.direction = "right"
+
+            Label:
+                text: '   Chicken Rice'
+                halign:'center'
+                valign:'center'
+                text_size: self.size
+                size_hint_x: 0.6
+
+            Button:
+                id: 'cart'
+                text: 'Cart'
+                background_color: 0.3, 0.3, 0.3, 0.7
+                size_hint_x: 0.2
+                on_release:
+                    app.root.current =  'cart_page'
+                    root.manager.transition.direction = "left"
+
+        ScrollView:
+            size_hint_y: 0.92
+            bar_width: 10
+            bar_color: 0, 0, 0, 0.5
+            bar_inactive_color: 0, 0, 0, 0
+            effect_cls: "ScrollEffect"
+            scroll_type: ['bars']
+            canvas.before:
+                Color:
+                    rgba: 1, 1, 1, 1
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+
+            GridLayout:
+                cols: 2
+                size_hint_y: None
+                spacing: 0, 5
+                height: self.minimum_height
+                canvas.before:
+                    Color:
+                        rgba: 1, 1, 1, 1
+                    Rectangle:
+                        size: self.size
+                        pos: self.pos
+
+                MyButtonStalls:
+                    text: "  Roasted Chicken Rice"
+                    on_release:
+                        root.on_press_rcr()
+                        root.manager.transition.direction = "left"
+
+                MyLabelStalls:
+                    text: 'SGD 3.50'
+
+
+                MyWidget:
+                MyWidget:
+
+                MyButtonStalls:
+                    text: "  Steamed Chicken Rice"
+                    on_release:
+                        root.on_press_scr()
+                        root.manager.transition.direction = "left"
+
+                MyLabelStalls:
+                    text: 'SGD 3.50'
+
+
+                MyWidget:
+                MyWidget:
+
+                MyButtonStalls:
+                    text: '  Char Siew Wanton Mee'
+                    on_release:
+                        root.on_press_cwm()
+                        root.manager.transition.direction = "left"
+
+                MyLabelStalls:
+                    text: 'SGD 4.00'
+
+
+                MyWidget:
+                MyWidget:
+
+                MyButtonStalls:
+                    text: "  Char Siew Rice"
+                    on_release:
+                        root.on_press_csr()
+                        root.manager.transition.direction = "left"
+
+                MyLabelStalls:
+                    text: 'SGD 3.50'
+
+
+                MyWidget:
+                MyWidget:
+
+                MyButtonStalls:
+                    text: "  Wanton soup with rice"
+                    on_release:
+                        root.on_press_csr()
+                        root.manager.transition.direction = "left"
+
+                MyLabelStalls:
+                    text: 'SGD 4.00'
+
+                MyWidget:
+                MyWidget:
+
+                MyButtonStalls:
+                    text: "  Roasted Pork Rice"
+                    on_release:
+                        root.on_press_csr()
+                        root.manager.transition.direction = "left"
+
+                MyLabelStalls:
+                    text: 'SGD 4.00'
+
+<HealthSoupScreen>
+    name: 'health_soup'
+
+    GridLayout:
+        rows: 2
+
+        GridLayout:
+            cols: 3
+            size_hint_y: 0.08
+            canvas.before:
+                Color:
+                    rgba: 40/255, 146/255, 69/255, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+
+            Button:
+                text: 'Back'
+                background_color: 0.3, 0.3, 0.3, 0.7
+                size_hint_x: 0.2
+                on_release:
+                    app.root.current =  'main_menu'
+                    root.manager.transition.direction = "right"
+
+            Label:
+                text: '   Health Soup'
+                halign:'center'
+                valign:'center'
+                text_size: self.size
+                size_hint_x: 0.6
+
+            Button:
+                id: 'cart'
+                text: 'Cart'
+                background_color: 0.3, 0.3, 0.3, 0.7
+                size_hint_x: 0.2
+                on_release:
+                    app.root.current =  'cart_page'
+                    root.manager.transition.direction = "left"
+
+        ScrollView:
+            size_hint_y: 0.92
+            bar_width: 10
+            bar_color: 0, 0, 0, 0.5
+            bar_inactive_color: 0, 0, 0, 0
+            effect_cls: "ScrollEffect"
+            scroll_type: ['bars']
+            canvas.before:
+                Color:
+                    rgba: 1, 1, 1, 1
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+
+            GridLayout:
+                cols: 2
+                size_hint_y: None
+                spacing: 0, 5
+                height: self.minimum_height
+                canvas.before:
+                    Color:
+                        rgba: 1, 1, 1, 1
+                    Rectangle:
+                        size: self.size
+                        pos: self.pos
+
+                MyButtonStalls:
+                    text: "  Old Cucumber Soup"
+                    on_release:
+                        root.on_press_ocs()
+                        root.manager.transition.direction = "left"
+
+                MyLabelStalls:
+                    text: 'SGD 4.50'
+
+
+                MyWidget:
+                MyWidget:
+
+                MyButtonStalls:
+                    text: "  Lotus Root Soup"
+                    on_release:
+                        root.on_press_lrs()
+                        root.manager.transition.direction = "left"
+
+                MyLabelStalls:
+                    text: 'SGD 4.50'
+
+
+                MyWidget:
+                MyWidget:
+
+                MyButtonStalls:
+                    text: '  Pork Tripe Soup'
+                    on_release:
+                        root.on_press_pts()
+                        root.manager.transition.direction = "left"
+
+                MyLabelStalls:
+                    text: 'SGD 4.50'
+
+
+                MyWidget:
+                MyWidget:
+
+                MyButtonStalls:
+                    text: "  Bak Kut Teh"
+                    on_release:
+                        root.on_press_bkt()
+                        root.manager.transition.direction = "left"
+
+                MyLabelStalls:
+                    text: 'SGD 2.50'
+
+
+                MyWidget:
+                MyWidget:
+
+                MyButtonStalls:
+                    text: "  Tomato Soup"
+                    on_release:
+                        root.on_press_ts()
+                        root.manager.transition.direction = "left"
+
+                MyLabelStalls:
+                    text: 'SGD 4.00'
+
+                MyWidget:
+                MyWidget:
+
+                MyButtonStalls:
+                    text: "  Watercress Soup"
+                    on_release:
+                        root.on_press_wcs()
+                        root.manager.transition.direction = "left"
+
+                MyLabelStalls:
+                    text: 'SGD 4.00'
+
+<CartPage>
+    name: 'cart_page'
+    container: container
+
+    on_pre_enter:
+        root.add_text_inputs()
+        root.chosen_store()
+
+    GridLayout:
+        rows: 3
+
+        GridLayout:
+            cols: 3
+            size_hint_y: 0.08
+            canvas.before:
+                Color:
+                    rgba: 40/255, 146/255, 69/255, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+
+            Button:
+                text: 'Back'
+                size_hint_x: 0.2
+                background_color: 0.3, 0.3, 0.3, 0.7
+                on_release:
+                    root.back_button()
+                    root.clear_scroll()
+                    root.manager.transition.direction = "right"
+
+            Label:
+                id: store_name
+                size_hint_x: 0.6
+                text: ''
+                color: 1, 1, 1, 1
+                background_color: 0, 0, 0, 0
+
+            Button:
+                text: 'Clear'
+                background_color: 0.3, 0.3, 0.3, 0.7
+                size_hint_x: 0.2
+                on_release:
+                    root.clear_orders()
+                    root.clear_scroll()
+
+
+
+        GridLayout:
+            size_hint_y: 0.82
+            cols: 2
+            canvas.before:
+                Color:
+                    rgba: 1, 1, 1, 1
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+
+            ScrollView:
+                size_hint: (1, .9)
+                bar_width: 10
+                bar_color: 0, 0, 0, 0.5
+                bar_inactive_color: 0, 0, 0, 0
+                effect_cls: "ScrollEffect"
+                scroll_type: ['bars']
+
+                StackLayout:
+                    id: container
+                    size_hint_y: None
+
+        GridLayout:
+            size_hint_y: 0.1
+            cols: 3
+            canvas.before:
+                Color:
+                    rgba: 40/255, 146/255, 69/255, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+
+            Button:
+                text: 'Submit Orders'
+                size_hint_z: 0.7
+                color: 1, 1, 1, 1
+                background_color: 0, 0, 0, 0
+                on_release:
+                    root.submit_orders()
+
+            Label:
+                id: subtotal
+                text: ''
+                size_hint_x: 0.1
+                color: 1, 1, 1, 1
+
+            Label:
+                size_hint_x: 0.2
+
+<OrdersPage>
+    name: 'orders_page'
+
+    GridLayout:
+        rows: 2
+
+        GridLayout:
+            cols: 2
+            size_hint_y: 0.08
+            canvas.before:
+                Color:
+                    rgba: 40/255, 146/255, 69/255, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+
+            Button:
+                text: 'Back'
+                background_color: 0.3, 0.3, 0.3, 0.7
+                size_hint_x: 0.2
+                on_release:
+                    app.root.current =  'main_menu'
+                    root.manager.transition.direction = "right"
+
+            Label:
+                text: '   Your orders'
+                halign:'center'
+                valign:'center'
+                text_size: self.size
+                size_hint_x: 0.8
+
+        ScrollView:
+            size_hint_y: 0.92
+            bar_width: 10
+            bar_color: 0, 0, 0, 0.5
+            bar_inactive_color: 0, 0, 0, 0
+            effect_cls: "ScrollEffect"
+            scroll_type: ['bars']
+            canvas.before:
+                Color:
+                    rgba: 1, 1, 1, 1
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+
+            GridLayout:
+                cols: 2
+                size_hint_y: None
+                spacing: 0, 5
+                height: self.minimum_height
+                canvas.before:
+                    Color:
+                        rgba: 1, 1, 1, 1
+                    Rectangle:
+                        size: self.size
+                        pos: self.pos
+
+                MyButtonStalls:
+                    text: "  Old Cucumber Soup"
+                    on_release:
+                        root.on_press_ocs()
+                        root.manager.transition.direction = "left"
+
+                MyLabelStalls:
+                    text: 'SGD 4.50'
+
+
+                MyWidget:
+                MyWidget:
+
+                MyButtonStalls:
+                    text: "  Lotus Root Soup"
+                    on_release:
+                        root.on_press_lrs()
+                        root.manager.transition.direction = "left"
+
+                MyLabelStalls:
+                    text: 'SGD 4.50'
+
+
+                MyWidget:
+                MyWidget:
+
+                MyButtonStalls:
+                    text: '  Pork Tripe Soup'
+                    on_release:
+                        root.on_press_pts()
+                        root.manager.transition.direction = "left"
+
+                MyLabelStalls:
+                    text: 'SGD 4.50'
+
+
+                MyWidget:
+                MyWidget:
+
+                MyButtonStalls:
+                    text: "  Bak Kut Teh"
+                    on_release:
+                        root.on_press_bkt()
+                        root.manager.transition.direction = "left"
+
+                MyLabelStalls:
+                    text: 'SGD 2.50'
+
+
+                MyWidget:
+                MyWidget:
+
+                MyButtonStalls:
+                    text: "  Tomato Soup"
+                    on_release:
+                        root.on_press_ts()
+                        root.manager.transition.direction = "left"
+
+                MyLabelStalls:
+                    text: 'SGD 4.00'
+
+                MyWidget:
+                MyWidget:
+
+                MyButtonStalls:
+                    text: "  Watercress Soup"
+                    on_release:
+                        root.on_press_wcs()
+                        root.manager.transition.direction = "left"
+
+                MyLabelStalls:
+                    text: 'SGD 4.00'
+
+
